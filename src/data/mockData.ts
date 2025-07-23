@@ -1,0 +1,348 @@
+import type { Category, SideDish, Allergen, QuickTag, ManagedIngredient } from '@/types.ts';
+
+// Fáze 1: Rozšíření globálních dat
+export const globalSideDishes: SideDish[] = [
+  { id: 'sd1', name: 'Hranolky', price: 50 },
+  { id: 'sd2', name: 'Krokety', price: 55 },
+  { id: 'sd3', name: 'Americké brambory', price: 60 },
+  { id: 'sd4', name: 'Vařené brambory s máslem', price: 45 },
+  { id: 'sd5', name: 'Šťouchané brambory', price: 55 },
+  { id: 'sd6', name: 'Grilovaná zelenina', price: 75 },
+  { id: 'sd7', name: 'Malý míchaný salát', price: 65 },
+  { id: 'sd8', name: 'Rýže', price: 40 },
+];
+
+export const globalAllergens: Allergen[] = [
+  { id: 1, name: 'Obiloviny obsahující lepek' },
+  { id: 2, name: 'Korýši a výrobky z nich' },
+  { id: 3, name: 'Vejce a výrobky z nich' },
+  { id: 4, name: 'Ryby a výrobky z nich' },
+  { id: 5, name: 'Podzemnice olejná (arašídy) a výrobky z nich' },
+  { id: 6, name: 'Sójové boby (sója) a výrobky z nich' },
+  { id: 7, name: 'Mléko a výrobky z něj (včetně laktózy)' },
+  { id: 8, name: 'Skořápkové plody a výrobky z nich' },
+  { id: 9, name: 'Celer a výrobky z něj' },
+  { id: 10, name: 'Hořčice a výrobky z ní' },
+  { id: 11, name: 'Sezamová semena (sezam) a výrobky z nich' },
+  { id: 12, name: 'Oxid siřičitý a siřičitany' },
+  { id: 13, name: 'Vlčí bob (lupina) a výrobky z něj' },
+  { id: 14, name: 'Měkkýši a výrobky z nich' },
+];
+
+export const globalTags: QuickTag[] = [
+    { id: 'tag1', name: 'Pálivé', color: '#E53E3E' },
+    { id: 'tag2', name: 'Vegetariánské', color: '#38A169' },
+    { id: 'tag3', name: 'Nové', color: '#3182CE' },
+    { id: 'tag4', name: 'Doporučujeme', color: '#DD6B20' },
+    { id: 'tag5', name: 'Veganské', color: '#2F855A' },
+    { id: 'tag6', name: 'Bezlepkové', color: '#D69E2E' },
+    { id: 'tag7', name: 'Specialita šéfkuchaře', color: '#805AD5' },
+];
+
+export const globalManagedIngredients: ManagedIngredient[] = [
+    { id: 'ing1', name: 'Hovězí svíčková', status: 'IN_STOCK' },
+    { id: 'ing2', name: 'Kuřecí prsa', status: 'IN_STOCK' },
+    { id: 'ing3', name: 'Losos filet', status: 'OUT_OF_STOCK' },
+    { id: 'ing4', name: 'Avokádo', status: 'IN_STOCK' },
+    { id: 'ing5', name: 'Vepřová panenka', status: 'IN_STOCK' },
+    { id: 'ing6', name: 'Kachní stehno', status: 'IN_STOCK' },
+    { id: 'ing7', name: 'Cheddar', status: 'IN_STOCK' },
+    { id: 'ing8', name: 'Parmazán', status: 'IN_STOCK' },
+];
+
+// Fáze 2 a 3: Vytvoření kompletní struktury menu a implementace
+export const mockData: Category[] = [
+  // 1. Předkrmy a Malá jídla
+  {
+    id: 'cat_starters',
+    name: 'Předkrmy & Malá jídla',
+    type: 'starter',
+    icon: 'Sparkles',
+    items: [
+      {
+        id: 'item_tatarak',
+        name: 'Hovězí tatarák (100g)',
+        description: 'Jemně namletý z pravé svíčkové, podávaný s topinkami s česnekem, lanýžovým olejem a křepelčím vejcem.',
+        basePrice: 215,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Hovězí svíčková', 'Topinky', 'Česnek', 'Křepelčí vejce'],
+        managedIngredientIds: ['ing1'],
+        ingredients: [],
+        allergenIds: [1, 3, 10],
+        tags: [globalTags[3], globalTags[6]],
+      },
+      {
+        id: 'item_kozi_syr',
+        name: 'Grilovaný kozí sýr',
+        description: 'Na lůžku z pečené červené řepy, s rukolou, vlašskými ořechy a medovo-balsamikovým přelivem.',
+        basePrice: 185,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Kozí sýr', 'Červená řepa', 'Rukola', 'Vlašské ořechy'],
+        ingredients: [],
+        allergenIds: [7, 8],
+        tags: [globalTags[1], globalTags[5]],
+      },
+    ],
+  },
+  // 2. Polévky
+  {
+    id: 'cat_soups',
+    name: 'Polévky',
+    type: 'soup',
+    icon: 'Soup',
+    items: [
+      {
+        id: 'item_kulajda',
+        name: 'Tradiční jihočeská kulajda',
+        description: 'Hustá smetanová polévka s houbami, koprem, bramborami a ztraceným vejcem.',
+        basePrice: 85,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Smetana', 'Houby', 'Kopr', 'Vejce'],
+        ingredients: [],
+        allergenIds: [1, 3, 7],
+        tags: [globalTags[1]],
+      },
+      {
+        id: 'item_vyvar',
+        name: 'Silný hovězí vývar',
+        description: 'S játrovými knedlíčky, domácími nudlemi a kořenovou zeleninou.',
+        basePrice: 75,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Hovězí vývar', 'Játrové knedlíčky', 'Nudle'],
+        ingredients: [],
+        allergenIds: [1, 3, 9],
+        tags: [],
+      },
+    ],
+  },
+  // 3. Hlavní jídla
+  {
+    id: 'cat_main_courses',
+    name: 'Hlavní jídla',
+    type: 'main_course',
+    icon: 'ChefHat',
+    items: [],
+    subCategories: [
+      {
+        id: 'subcat_cz_classics',
+        name: 'Česká klasika moderně',
+        items: [
+          {
+            id: 'item_svickova',
+            name: 'Svíčková na smetaně',
+            description: 'Z pravé hovězí svíčkové, podávaná s naším karlovarským knedlíkem, brusinkovým terčem a šlehačkou.',
+            basePrice: 285,
+            status: 'AVAILABLE',
+            variants: [],
+            baseIngredients: ['Hovězí svíčková', 'Smetanová omáčka', 'Karlovarský knedlík'],
+            managedIngredientIds: ['ing1'],
+            ingredients: [],
+            sideDishIds: [],
+            allergenIds: [1, 7, 9, 10],
+            tags: [globalTags[3], globalTags[6]],
+          },
+          {
+            id: 'item_kachna',
+            name: 'Konfitované kachní stehno',
+            description: 'Pomaly pečené kachní stehno s jablečným červeným zelím a domácími bramborovými lokšemi.',
+            basePrice: 320,
+            status: 'AVAILABLE',
+            variants: [],
+            baseIngredients: ['Kachní stehno', 'Červené zelí', 'Bramborové lokše'],
+            managedIngredientIds: ['ing6'],
+            ingredients: [],
+            sideDishIds: [],
+            allergenIds: [1, 12],
+            tags: [],
+          },
+        ],
+      },
+      {
+        id: 'subcat_steaks',
+        name: 'Masa & Steaky',
+        items: [
+          {
+            id: 'item_flank_steak',
+            name: 'Hovězí flank steak (200g)',
+            description: 'Perfektně propečený, šťavnatý flank steak z mladého býčka, podávaný s naší domácí pepřovou omáčkou.',
+            basePrice: 385,
+            status: 'AVAILABLE',
+            variants: [
+              { id: 'var_rare', name: 'Rare', price: 0 },
+              { id: 'var_medium', name: 'Medium', price: 0 },
+              { id: 'var_welldone', name: 'Well-done', price: 15 }
+            ],
+            baseIngredients: ['Hovězí flank', 'Pepřová omáčka'],
+            managedIngredientIds: ['ing1'],
+            ingredients: [
+                { id: 'ing_extra_bacon', name: 'Extra slanina', price: 35 },
+                { id: 'ing_extra_sauce', name: 'Extra porce omáčky', price: 40 }
+            ],
+            sideDishIds: ['sd1', 'sd3', 'sd5', 'sd6'],
+            allergenIds: [7, 10, 12],
+            tags: [globalTags[3]],
+          },
+        ],
+      },
+      {
+        id: 'subcat_fish',
+        name: 'Ryby',
+        items: [
+          {
+            id: 'item_losos',
+            name: 'Pečený losos na bylinkách',
+            description: 'Filet z lososa pečený na másle s čerstvými bylinkami, podávaný s lehkým salátkem.',
+            basePrice: 350,
+            status: 'SOLD_OUT',
+            variants: [],
+            baseIngredients: ['Losos', 'Bylinky', 'Máslo'],
+            managedIngredientIds: ['ing3'],
+            ingredients: [],
+            sideDishIds: ['sd4', 'sd5', 'sd7'],
+            allergenIds: [4, 7],
+            tags: [],
+          },
+        ],
+      },
+      {
+        id: 'subcat_vegetarian',
+        name: 'Bezmasá jídla',
+        items: [
+          {
+            id: 'item_risotto',
+            name: 'Houbové risotto',
+            description: 'Krémové risotto s lesními houbami, parmazánem a rukolou.',
+            basePrice: 245,
+            status: 'AVAILABLE',
+            variants: [],
+            baseIngredients: ['Rýže Arborio', 'Lesní houby', 'Parmazán'],
+            managedIngredientIds: ['ing8'],
+            ingredients: [],
+            sideDishIds: [],
+            allergenIds: [7],
+            tags: [globalTags[1], globalTags[5]],
+          },
+        ],
+      },
+    ],
+  },
+  // 4. Pizza
+  {
+    id: 'cat_pizza',
+    name: 'Pizza',
+    type: 'pizza',
+    icon: 'Pizza',
+    items: [
+      {
+        id: 'item_margherita',
+        name: 'Margherita',
+        description: 'Klasika s rajčatovým sugem, mozzarellou a čerstvou bazalkou.',
+        basePrice: 190,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Rajčatové sugo', 'Mozzarella', 'Bazalka'],
+        ingredients: [],
+        allergenIds: [1, 7],
+        tags: [globalTags[1]],
+      },
+      {
+        id: 'item_quattro_formaggi',
+        name: 'Quattro Formaggi',
+        description: 'Smetanový základ, mozzarella, gorgonzola, parmazán a uzený sýr.',
+        basePrice: 240,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Smetana', 'Mozzarella', 'Gorgonzola', 'Parmazán'],
+        managedIngredientIds: ['ing8'],
+        ingredients: [],
+        allergenIds: [1, 7],
+        tags: [globalTags[3]],
+      },
+    ],
+  },
+  // 5. Saláty
+  {
+    id: 'cat_salads',
+    name: 'Saláty',
+    icon: 'Salad',
+    items: [
+      {
+        id: 'item_caesar',
+        name: 'Caesar salát',
+        description: 'Římský salát s ančovičkovým dresinkem, krutony, parmazánem a grilovanými kuřecími prsy.',
+        basePrice: 235,
+        status: 'AVAILABLE',
+        variants: [
+          { id: 'var_no_meat', name: 'Bez masa', price: -40 },
+        ],
+        baseIngredients: ['Římský salát', 'Ančovičkový dresink', 'Krutony', 'Parmazán', 'Kuřecí prsa'],
+        managedIngredientIds: ['ing2', 'ing8'],
+        ingredients: [],
+        allergenIds: [1, 3, 4, 7, 10],
+        tags: [],
+      },
+    ],
+  },
+  // 6. Dezerty
+  {
+    id: 'cat_desserts',
+    name: 'Dezerty',
+    type: 'dessert',
+    icon: 'Cake',
+    items: [
+      {
+        id: 'item_cheesecake',
+        name: 'Domácí cheesecake',
+        description: 'S lesním ovocem a mátou.',
+        basePrice: 125,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: ['Tvaroh', 'Sušenky', 'Máslo', 'Lesní ovoce'],
+        ingredients: [],
+        allergenIds: [1, 3, 7],
+        tags: [globalTags[3]],
+      },
+    ],
+  },
+  // 7. Nápoje
+  {
+    id: 'cat_drinks',
+    name: 'Nápoje',
+    type: 'drink',
+    icon: 'GlassWater',
+    items: [
+      {
+        id: 'item_limonada',
+        name: 'Domácí limonáda (0.5l)',
+        description: 'Osvěžující limonáda z čerstvého ovoce a bylinek.',
+        basePrice: 80,
+        status: 'AVAILABLE',
+        variants: [
+            { id: 'var_malina', name: 'Malinová', price: 0 },
+            { id: 'var_bez', name: 'Bezová', price: 0 },
+            { id: 'var_citron', name: 'Citron & Máta', price: 5 },
+        ],
+        baseIngredients: [],
+        ingredients: [],
+        allergenIds: [],
+        tags: [],
+      },
+      {
+        id: 'item_pilsner',
+        name: 'Pilsner Urquell (0.5l)',
+        description: 'Čepované pivo.',
+        basePrice: 55,
+        status: 'AVAILABLE',
+        variants: [],
+        baseIngredients: [],
+        ingredients: [],
+        allergenIds: [1],
+        tags: [],
+      },
+    ],
+  },
+];

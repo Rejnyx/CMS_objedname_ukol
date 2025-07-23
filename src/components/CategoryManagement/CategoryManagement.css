@@ -1,0 +1,17 @@
+/* Styly pro komponentu CategoryManagement přijdou sem */
+
+.category-management-container {
+  display: flex;
+  height: 100vh;
+}
+
+.category-list {
+  width: 30%;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.item-list {
+  width: 70%;
+  padding: 1rem;
+}
